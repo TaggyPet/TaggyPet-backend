@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:15.3-alpine3.18'
+    restart: unless-stopped
+    container_name: 'taggy-pet-postgres'
+    env_file:
+      - db-conf.env
+    volumes:
+      - taggy-pet-postgres-volume:/var/lib/postgresql/data
+      - ../backups/actual-backup.sql:/docker-entrypoint-initdb.d/backup.sql
+    networks:
+      - tp-network
+
+  app:
+    build: ./
+    container_name: 'taggy-pet-application'
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+    networks:
+      - tp-network
+
+  nginx:
+    image: nginx
+    container_name: 'taggy-pet-nginx'
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /home/tolkate:/etc/nginx/ssl
+    depends_on:
+      - app
+    networks:
+      - tp-network
+
+volumes:
+  taggy-pet-postgres-volume:
+    driver: local
+
+networks:
+  tp-network:
+    driver: bridge
