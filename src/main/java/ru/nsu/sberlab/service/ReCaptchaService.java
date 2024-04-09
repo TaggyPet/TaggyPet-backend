@@ -11,6 +11,7 @@ import ru.nsu.sberlab.recaptcha.ReCaptchaResponse;
 import java.net.URI;
 import java.util.Objects;
 
+@Deprecated
 @Service
 @RequiredArgsConstructor
 public class ReCaptchaService {

@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 RUN addgroup -S app && adduser -S app -G app
 USER app
 
+# FIXME: use war instead jar
 ADD /target/Taggy-Pet-0.1.jar backend.jar
 
 ENTRYPOINT ["java", "-jar", "backend.jar"]

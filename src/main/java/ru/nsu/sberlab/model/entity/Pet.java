@@ -1,8 +1,7 @@
 package ru.nsu.sberlab.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.nsu.sberlab.model.enums.Sex;
 
 import java.util.ArrayList;
@@ -10,7 +9,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "pets")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Pet {
     @Id
@@ -65,5 +66,18 @@ public class Pet {
         this.name = name;
         this.features = features;
         this.petImage = petImage;
+    }
+
+    @Override
+    public String toString() {
+        return "Pet{" +
+                "petId=" + petId +
+                ", chipId='" + chipId + '\'' +
+                ", stampId='" + stampId + '\'' +
+                ", type='" + type + '\'' +
+                ", breed='" + breed + '\'' +
+                ", sex=" + sex +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

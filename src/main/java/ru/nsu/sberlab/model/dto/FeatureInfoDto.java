@@ -1,12 +1,16 @@
 package ru.nsu.sberlab.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 public class FeatureInfoDto implements Comparable<FeatureInfoDto> {
     private String description;
+
+    @JsonProperty(value = "property_type")
     private PropertyTypeDto propertyType;
 
     @Override

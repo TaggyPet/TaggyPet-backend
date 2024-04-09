@@ -1,7 +1,7 @@
 package ru.nsu.sberlab.controller.exception;
 
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.utils.PropertyResolverUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +17,7 @@ import java.util.Locale;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ErrorController { // TODO: add handling of IllegalAccessToPetException
-    private final PropertyResolverUtils propertyResolverUtils;
+    private final MessageSource messageSource;
 
     @ExceptionHandler(value = FailedPetSearchException.class)
     @GetMapping
@@ -25,8 +25,7 @@ public class ErrorController { // TODO: add handling of IllegalAccessToPetExcept
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(
                                 LocalDateTime.now(),
-                        propertyResolverUtils.resolve("api.server.error.pet-not-found",
-                                Locale.getDefault()) + " : " + exception.getMessage()
+                                messageSource.getMessage("api.server.error.pet-not-found", new Object[]{exception.getMessage()}, Locale.getDefault())
                         )
                 );
     }
@@ -35,13 +34,13 @@ public class ErrorController { // TODO: add handling of IllegalAccessToPetExcept
     @GetMapping
     public ResponseEntity<ErrorResponse> handleNotFoundException(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ErrorResponse(LocalDateTime.now(), propertyResolverUtils.resolve(exception.getMessage(), Locale.getDefault())));
+                .body(new ErrorResponse(LocalDateTime.now(), messageSource.getMessage(exception.getMessage(), new Object[0], Locale.getDefault())));
     }
 
     @ExceptionHandler(value = Exception.class)
     @GetMapping
     public ResponseEntity<ErrorResponse> handleException(Exception exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponse(LocalDateTime.now(), propertyResolverUtils.resolve(exception.getMessage(), Locale.getDefault())));
+                .body(new ErrorResponse(LocalDateTime.now(), exception.getMessage()));
     }
 }

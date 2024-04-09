@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+// FIXME: performance problem
 @Entity
 @Table(name = "deleted_users")
 @Data

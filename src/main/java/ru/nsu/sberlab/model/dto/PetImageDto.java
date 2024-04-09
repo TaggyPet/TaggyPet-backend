@@ -1,10 +1,13 @@
 package ru.nsu.sberlab.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 public class PetImageDto {
+    @JsonProperty(value = "image_uuid_name")
     private String imageUUIDName;
 }

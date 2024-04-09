@@ -1,13 +1,11 @@
 package ru.nsu.sberlab.service;
 
-import org.apache.logging.log4j.util.Strings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,8 +56,6 @@ class UserServiceTest {
     private PersonalCabinetDtoMapper personalCabinetDtoMapper;
     @Mock
     private PetCleaner petCleaner;
-    @Mock
-    private PropertyResolverUtils propertyResolver;
 
     @BeforeEach
     void setUp() {
@@ -73,8 +69,7 @@ class UserServiceTest {
                 petInfoDtoMapper,
                 userInfoDtoMapper,
                 personalCabinetDtoMapper,
-                petCleaner,
-                propertyResolver
+                petCleaner
         );
     }
 
@@ -142,14 +137,15 @@ class UserServiceTest {
         String newFirstName = "William";
         boolean newPermitToShowEmailStatus = false;
         boolean newPermitToShowPhoneNumberStatus = true;
-        String newPassword = Strings.EMPTY;
+        String newPassword = "NEW_PASSWORD";
         List<SocialNetworkPostDto> newSocialNetworks = Collections.emptyList();
         UserEditDto userEditDto = new UserEditDto(
-                newFirstName,
                 email,
+                newFirstName,
                 newPhoneNumber,
-                newPermitToShowEmailStatus,
                 newPermitToShowPhoneNumberStatus,
+                newPermitToShowEmailStatus,
+                password,
                 newPassword,
                 newSocialNetworks
         );
