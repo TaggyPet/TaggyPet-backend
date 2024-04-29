@@ -2,13 +2,13 @@ package ru.nsu.sberlab.model.entity;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-// FIXME: performance problem
 @Entity
 @Table(name = "social_networks")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class SocialNetwork {
     @Id

@@ -1,16 +1,16 @@
 package ru.nsu.sberlab.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// FIXME: performance problem
 @Entity
 @Table(name = "feature_properties")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class FeatureProperty {
     @Id

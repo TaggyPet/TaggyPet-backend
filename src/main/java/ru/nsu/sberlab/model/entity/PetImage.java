@@ -1,13 +1,13 @@
 package ru.nsu.sberlab.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-// FIXME: performance problem
 @Entity
 @Table(name = "pet_images")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class PetImage {
     @Id
@@ -26,6 +26,7 @@ public class PetImage {
 
     @Lob
     @Column(name = "image_data")
+    @EqualsAndHashCode.Exclude
     private byte[] imageData;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "petImage")
