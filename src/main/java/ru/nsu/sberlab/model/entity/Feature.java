@@ -1,17 +1,17 @@
 package ru.nsu.sberlab.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-// FIXME: performance problem
 @Entity
 @Table(name = "features")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Feature {
     @Id
@@ -26,6 +26,7 @@ public class Feature {
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "features")
+    @EqualsAndHashCode.Exclude
     private List<Pet> pets = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -39,6 +40,7 @@ public class Feature {
             CascadeType.REFRESH
     }, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @EqualsAndHashCode.Exclude
     private User user;
 
     public Feature(FeatureProperty property) {

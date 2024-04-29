@@ -1,8 +1,7 @@
 package ru.nsu.sberlab.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.nsu.sberlab.model.enums.Role;
@@ -10,10 +9,11 @@ import ru.nsu.sberlab.model.enums.Role;
 import java.time.LocalDateTime;
 import java.util.*;
 
-// FIXME: performance problem
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class User implements UserDetails {
     @Id
@@ -61,6 +61,7 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "pet_id")}
     )
+    @EqualsAndHashCode.Exclude
     private List<Pet> pets = new ArrayList<>();
 
     @OneToMany(cascade = {
@@ -69,9 +70,11 @@ public class User implements UserDetails {
             CascadeType.REFRESH,
             CascadeType.PERSIST
     }, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private List<UserSocialNetwork> userSocialNetworks = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private List<Feature> features = new ArrayList<>();
 
     @PrePersist

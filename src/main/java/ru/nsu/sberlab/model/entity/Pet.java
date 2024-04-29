@@ -48,13 +48,16 @@ public class Pet {
             joinColumns = {@JoinColumn(name = "pet_id")},
             inverseJoinColumns = {@JoinColumn(name = "feature_id")}
     )
+    @EqualsAndHashCode.Exclude
     private List<Feature> features = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "pets")
+    @EqualsAndHashCode.Exclude
     private List<User> users = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "image_id")
+    @EqualsAndHashCode.Exclude
     private PetImage petImage;
 
     public Pet(String chipId, String stampId, String type, String breed, Sex sex, String name, List<Feature> features, PetImage petImage) {
