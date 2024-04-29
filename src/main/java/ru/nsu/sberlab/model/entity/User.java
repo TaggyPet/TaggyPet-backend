@@ -10,6 +10,7 @@ import ru.nsu.sberlab.model.enums.Role;
 import java.time.LocalDateTime;
 import java.util.*;
 
+// FIXME: performance problem
 @Entity
 @Table(name = "users")
 @Data

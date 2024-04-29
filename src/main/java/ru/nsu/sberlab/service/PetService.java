@@ -1,12 +1,15 @@
 package ru.nsu.sberlab.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.utils.PropertyResolverUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ru.nsu.sberlab.dao.FeaturePropertiesRepository;
+import ru.nsu.sberlab.dao.PetRepository;
+import ru.nsu.sberlab.dao.UserRepository;
 import ru.nsu.sberlab.exception.AddPetImageException;
 import ru.nsu.sberlab.exception.FailedPetSearchException;
 import ru.nsu.sberlab.exception.IllegalAccessToPetException;
@@ -22,9 +25,6 @@ import ru.nsu.sberlab.model.mapper.PetEditDtoMapper;
 import ru.nsu.sberlab.model.mapper.PetInfoDtoMapper;
 import ru.nsu.sberlab.model.util.FeaturesConverter;
 import ru.nsu.sberlab.model.util.PetCleaner;
-import ru.nsu.sberlab.dao.FeaturePropertiesRepository;
-import ru.nsu.sberlab.dao.PetRepository;
-import ru.nsu.sberlab.dao.UserRepository;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -32,6 +32,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PetService {
@@ -42,7 +43,6 @@ public class PetService {
     private final PetEditDtoMapper petEditDtoMapper;
     private final FeaturesConverter featuresConverter;
     private final PetCleaner petCleaner;
-    private final PropertyResolverUtils propertyResolver;
 
     public PetInfoDto getPetInfoBySearchParameter(String searchParameter) {
         if (isChipIdParameter(searchParameter)) {
@@ -54,6 +54,12 @@ public class PetService {
                     .map(petInfoDtoMapper)
                     .orElseThrow(() -> new FailedPetSearchException(searchParameter));
         }
+    }
+
+    public PetInfoDto getPetInfoByPetId(long petId) {
+        return petRepository.findByPetId(petId)
+                .map(petInfoDtoMapper)
+                .orElseThrow(() -> new FailedPetSearchException("Incorrect ID: " + petId));
     }
 
     public PetEditDto getPetEditDtoByChipId(String chipId) { // TODO: maybe remove
@@ -81,18 +87,11 @@ public class PetService {
         );
         checkIfUserHasAccessToPet(currentUser, pet);
 
-        if (Objects.nonNull(petEditDto.getType())) {
-            pet.setType(petEditDto.getType());
-        }
-        if (Objects.nonNull(petEditDto.getBreed())) {
-            pet.setBreed(petEditDto.getBreed());
-        }
-        if (Objects.nonNull(petEditDto.getSex())) {
-            pet.setSex(petEditDto.getSex());
-        }
-        if (Objects.nonNull(petEditDto.getName())) {
-            pet.setName(petEditDto.getName());
-        }
+        log.info("Received request to update pet with id: {}", petId);
+        pet.setType(petEditDto.getType());
+        pet.setBreed(petEditDto.getBreed());
+        pet.setSex(petEditDto.getSex());
+        pet.setName(petEditDto.getName());
         if (Objects.nonNull(petEditDto.getFeatures())) {
             Map<Long, Feature> featureMap = pet.getFeatures()
                     .stream()
@@ -144,6 +143,7 @@ public class PetService {
         );
         checkIfUserHasAccessToPet(currentUser, pet);
 
+        log.info("Received request to delete pet with id: {}", petId);
         currentUser.getPets().remove(pet);
         petCleaner.detachUser(pet, currentUser);
         petCleaner.detachFeatures(pet);
@@ -152,6 +152,7 @@ public class PetService {
     }
 
     public List<PetInfoDto> petsList(Pageable pageable) {
+        log.info("Received request to privileged pets list");
         return petRepository.findAll(pageable)
                 .getContent()
                 .stream()
@@ -170,9 +171,5 @@ public class PetService {
 
     private boolean isChipIdParameter(String searchParameter) {
         return Pattern.matches("\\d{15}", searchParameter);
-    }
-
-    private String message(String property) { // TODO: maybe move this method to ErrorController
-        return propertyResolver.resolve(property, Locale.getDefault());
     }
 }

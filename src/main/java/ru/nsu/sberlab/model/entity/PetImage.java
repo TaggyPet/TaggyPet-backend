@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// FIXME: performance problem
 @Entity
 @Table(name = "pet_images")
 @Data

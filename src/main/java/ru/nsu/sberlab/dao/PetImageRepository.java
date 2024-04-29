@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PetImageRepository extends JpaRepository<PetImage, Long> {
-    Optional<PetImage> findByImageUUIDName(String uuidName);
+    Optional<PetImage> findTopByImageUUIDName(String uuidName);
 }

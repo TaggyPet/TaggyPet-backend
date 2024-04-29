@@ -2,12 +2,15 @@ package ru.nsu.sberlab.controller;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.nsu.sberlab.model.dto.DeletedPetDto;
@@ -15,8 +18,6 @@ import ru.nsu.sberlab.model.dto.PetEditDto;
 import ru.nsu.sberlab.model.dto.PetInfoDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.service.PetService;
-import lombok.RequiredArgsConstructor;
-import ru.nsu.sberlab.service.ReCaptchaService;
 
 import java.util.List;
 
@@ -25,25 +26,31 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PetController {
     private final PetService petService;
-//    private final ReCaptchaService reCaptchaService; // FIXME
 
     // TODO: add captcha to frontend
     @GetMapping(value = "find/{searchParameter}")
     public ResponseEntity<PetInfoDto> getPetInfo(
-//            @RequestParam(name = "g-recaptcha-response") String response,
             @PathVariable(value = "searchParameter") @NotBlank String searchParameter
     ) {
-//        reCaptchaService.verify(response, "find", "/");
         PetInfoDto petInfo = petService.getPetInfoBySearchParameter(searchParameter);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(petInfo);
     }
 
-    @PatchMapping(value = "{petId}")
+    @GetMapping(value = "{petId}")
+    public ResponseEntity<PetInfoDto> getPetInfo(
+            @PathVariable(value = "petId") @NotNull @Min(0) long petId
+    ) {
+        PetInfoDto petInfo = petService.getPetInfoByPetId(petId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(petInfo);
+    }
+
+    @PutMapping(value = "{petId}")
     public ResponseEntity<PetInfoDto> editPet(
             @PathVariable("petId") @Min(value = 0, message = "Pet id should be positive value") long petId,
-            @RequestPart("pet") PetEditDto petEditDto,
-            @RequestPart("imageFile") MultipartFile imageFile,
+            @RequestPart("pet") @Validated PetEditDto petEditDto,
+            @RequestPart("image_file") MultipartFile imageFile,
             @AuthenticationPrincipal User principal
     ) {
         PetInfoDto updatedPet = petService.updatePet(petId, petEditDto, imageFile, principal);
@@ -53,15 +60,15 @@ public class PetController {
 
     @DeleteMapping(value = "{petId}")
     public ResponseEntity<DeletedPetDto> deletePet(
-            @PathVariable(value = "petId") @Min(value = 0, message = "Pet id should be positive value") long id,
+            @PathVariable(value = "petId") @Min(value = 0, message = "Pet id should be positive value") long petId,
             @AuthenticationPrincipal User principal
     ) {
-        DeletedPetDto deletedPet = petService.deletePet(id, principal);
+        DeletedPetDto deletedPet = petService.deletePet(petId, principal);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(deletedPet);
     }
 
-    @GetMapping(value = "privileged-list")
+    @GetMapping(value = "privileged/list")
     public ResponseEntity<List<PetInfoDto>> privilegedPetsList(
             @PageableDefault Pageable pageable
     ) {

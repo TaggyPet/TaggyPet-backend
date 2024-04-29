@@ -1,14 +1,20 @@
 package ru.nsu.sberlab.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class SocialNetworkInfoDto {
+    @JsonProperty(value = "property_id")
     private Long propertyId;
+
+    @JsonProperty(value = "property_value")
     private String propertyValue;
+
+    @JsonProperty(value = "short_name")
     private String shortName;
 }

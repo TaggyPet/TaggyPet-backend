@@ -1,16 +1,23 @@
 package ru.nsu.sberlab.model.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @RequiredArgsConstructor
 public class UserCardDto {
+    @JsonProperty(value = "first_name")
     private final String firstName;
+
     private final String email;
+
+    @JsonProperty(value = "phone_number")
     private final String phoneNumber;
+
+    @JsonProperty(value = "social_networks")
     private final List<SocialNetworkLinkDto> socialNetworks;
 }

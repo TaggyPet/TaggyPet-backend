@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+// FIXME: performance problem
 @Entity
 @Table(name = "feature_properties")
 @Data

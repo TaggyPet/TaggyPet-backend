@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+// FIXME: performance problem
 @Entity
 @Table(name = "features")
 @Data

@@ -5,13 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.nsu.sberlab.model.dto.*;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/user/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -20,10 +23,10 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "registration")
-    public ResponseEntity<UserInfoDto> createUser(@RequestBody UserRegistrationDto user) {
-        UserInfoDto createdUser = userService.createUser(user);
+    public ResponseEntity<?> createUser(@RequestBody @Validated UserRegistrationDto user) {
+        userService.createUser(user);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(createdUser);
+                .build();
     }
 
     @GetMapping(value = "pets")
@@ -36,14 +39,16 @@ public class UserController {
     }
 
     @PostMapping(value = "pets")
-    public ResponseEntity<PetInfoDto> createPet(
-            @RequestPart("pet") PetCreationDto pet,
-            @RequestPart("imageFile") MultipartFile imageFile,
-            @AuthenticationPrincipal User principal
+    public ResponseEntity<?> createPet(
+            @RequestPart("pet") @Validated PetCreationDto pet,
+            @RequestPart("image_file") MultipartFile imageFile,
+            @AuthenticationPrincipal User principal, UriComponentsBuilder uriComponentsBuilder
     ) {
-        PetInfoDto createdPet = userService.createPet(pet, imageFile, principal);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(createdPet);
+        String searchParameter = userService.createPet(pet, imageFile, principal);
+        return ResponseEntity.created(uriComponentsBuilder
+                        .path("/pet/find/{searchParameter}")
+                        .build(Map.of("searchParameter", searchParameter)))
+                .build();
     }
 
     @DeleteMapping
@@ -53,9 +58,9 @@ public class UserController {
                 .body(principal.getEmail());
     }
 
-    @PatchMapping
+    @PutMapping
     public ResponseEntity<?> editProfile(
-            @RequestBody UserEditDto editedUser,
+            @RequestBody @Validated UserEditDto editedUser,
             @AuthenticationPrincipal User principal
     ) {
         userService.updateUserInfo(editedUser, principal);
