@@ -12,12 +12,17 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     private static final String[] ENDPOINTS_WHITELIST = {
             "/",
-            "/user/registration",
-            "/pet/find/**",
-            "/pet/images/**",
+            "/api/v1/user/registration",
+            "/api/v1/pet/find/**",
+            "/api/v1/pet/images/**",
             "/css/**",
             "/img/**",
             "/js/**"
+    };
+    private static final String[] SWAGGER_OPENAPI_ENDPOINTS = {
+            "/v3/api-docs/**",
+            "/swagger-ui.html",
+            "/swagger-ui/**"
     };
 
     @Bean
@@ -28,7 +33,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(ENDPOINTS_WHITELIST)
                         .permitAll()
-                        .requestMatchers("/pet/privileged-list")
+                        .requestMatchers(SWAGGER_OPENAPI_ENDPOINTS)
+                        .permitAll()
+                        .requestMatchers("/api/v1/pet/privileged-list")
                         .hasAnyRole("PRIVILEGED_ACCESS", "ADMIN")
                         .anyRequest()
                         .authenticated())

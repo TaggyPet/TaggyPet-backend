@@ -28,10 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	// https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui
 	implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:$springOpenApiStarterVersion"
-
-	// https://mvnrepository.com/artifact/me.paulschwarz/spring-dotenv
 	implementation "me.paulschwarz:spring-dotenv:$springDotEnvVersion"
 
 	implementation 'org.flywaydb:flyway-core'
@@ -40,9 +37,7 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	// https://mvnrepository.com/artifact/com.h2database/h2
 	testImplementation 'com.h2database:h2'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }

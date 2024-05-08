@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.dao.SocialNetworkPropertiesRepository;
-import ru.nsu.sberlab.model.dto.SocialNetworkInfoDto;
+import ru.nsu.sberlab.model.dto.socialnetwork.SocialNetworkInfoDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.model.entity.UserSocialNetwork;
 

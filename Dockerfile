@@ -1,13 +1,11 @@
 FROM openjdk:17-alpine
 
 RUN mkdir -p /usr/src/app
-COPY . /usr/src/app
+ARG JAR_FILE=./build/libs/*.jar
+COPY ${JAR_FILE} /usr/src/app/backend.jar
 WORKDIR /usr/src/app
 
 RUN addgroup -S app && adduser -S app -G app
 USER app
-
-# FIXME: use war instead jar
-ADD /target/Taggy-Pet-0.1.jar backend.jar
 
 ENTRYPOINT ["java", "-jar", "backend.jar"]
