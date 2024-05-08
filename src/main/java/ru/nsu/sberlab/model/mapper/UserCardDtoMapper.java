@@ -1,8 +1,8 @@
 package ru.nsu.sberlab.model.mapper;
 
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.model.dto.SocialNetworkLinkDto;
-import ru.nsu.sberlab.model.dto.UserCardDto;
+import ru.nsu.sberlab.model.dto.socialnetwork.SocialNetworkLinkDto;
+import ru.nsu.sberlab.model.dto.user.UserCardDto;
 import ru.nsu.sberlab.model.entity.User;
 
 import java.util.function.Function;

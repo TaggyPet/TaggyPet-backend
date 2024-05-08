@@ -2,8 +2,8 @@ package ru.nsu.sberlab.model.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.model.dto.PetImageDto;
-import ru.nsu.sberlab.model.dto.PetInfoDto;
+import ru.nsu.sberlab.model.dto.pet.PetImageDto;
+import ru.nsu.sberlab.model.dto.pet.PetInfoDto;
 import ru.nsu.sberlab.model.entity.Pet;
 
 import java.util.Comparator;

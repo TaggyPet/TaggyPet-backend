@@ -14,9 +14,8 @@ import ru.nsu.sberlab.exception.AddPetImageException;
 import ru.nsu.sberlab.exception.FailedPetSearchException;
 import ru.nsu.sberlab.exception.IllegalAccessToPetException;
 import ru.nsu.sberlab.exception.PetNotFoundException;
-import ru.nsu.sberlab.model.dto.DeletedPetDto;
-import ru.nsu.sberlab.model.dto.PetEditDto;
-import ru.nsu.sberlab.model.dto.PetInfoDto;
+import ru.nsu.sberlab.model.dto.pet.PetEditDto;
+import ru.nsu.sberlab.model.dto.pet.PetInfoDto;
 import ru.nsu.sberlab.model.entity.Feature;
 import ru.nsu.sberlab.model.entity.Pet;
 import ru.nsu.sberlab.model.entity.PetImage;
@@ -134,7 +133,7 @@ public class PetService {
     }
 
     @Transactional
-    public DeletedPetDto deletePet(long petId, User principal) {
+    public void deletePet(long petId, User principal) {
         Pet pet = petRepository.findById(petId).orElseThrow(
                 () -> new PetNotFoundException("api.server.error.pet-not-found")
         );
@@ -148,7 +147,6 @@ public class PetService {
         petCleaner.detachUser(pet, currentUser);
         petCleaner.detachFeatures(pet);
         petCleaner.removePet(pet);
-        return new DeletedPetDto(pet.getChipId(), pet.getStampId());
     }
 
     public List<PetInfoDto> petsList(Pageable pageable) {

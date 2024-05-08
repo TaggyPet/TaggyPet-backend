@@ -2,7 +2,7 @@ package ru.nsu.sberlab.model.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.model.dto.UserInfoDto;
+import ru.nsu.sberlab.model.dto.user.UserInfoDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.service.UserSocialNetworkService;
 

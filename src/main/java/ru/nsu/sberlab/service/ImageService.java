@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.dao.PetImageRepository;
 import ru.nsu.sberlab.exception.ImageNotFoundException;
-import ru.nsu.sberlab.model.dto.PetImageDataDto;
+import ru.nsu.sberlab.model.dto.pet.PetImageDataDto;
 import ru.nsu.sberlab.model.entity.PetImage;
 
 import java.io.FileInputStream;

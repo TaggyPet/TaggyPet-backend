@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.utils.PropertyResolverUtils;
 import org.springframework.stereotype.Service;
 import ru.nsu.sberlab.exception.PropertyNotFoundException;
-import ru.nsu.sberlab.model.dto.FeatureCreationDto;
+import ru.nsu.sberlab.model.dto.feature.FeatureCreationDto;
 import ru.nsu.sberlab.model.entity.Feature;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.dao.FeaturePropertiesRepository;

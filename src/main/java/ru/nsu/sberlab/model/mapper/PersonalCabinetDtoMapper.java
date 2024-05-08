@@ -1,7 +1,10 @@
 package ru.nsu.sberlab.model.mapper;
 
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.model.dto.*;
+import ru.nsu.sberlab.model.dto.pet.PetCardDto;
+import ru.nsu.sberlab.model.dto.pet.PetImageDto;
+import ru.nsu.sberlab.model.dto.socialnetwork.SocialNetworkOverviewDto;
+import ru.nsu.sberlab.model.dto.user.PersonalCabinetDto;
 import ru.nsu.sberlab.model.entity.User;
 
 import java.util.function.Function;

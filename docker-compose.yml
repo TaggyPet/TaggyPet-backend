@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     container_name: 'taggy-pet-postgres'
     env_file:
-      - db-conf.env
+      - deploy/db-conf.env
     volumes:
       - taggy-pet-postgres-volume:/var/lib/postgresql/data
       - ../backups/actual-backup.sql:/docker-entrypoint-initdb.d/backup.sql
@@ -14,7 +14,9 @@ services:
       - tp-network
 
   app:
-    build: ./
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: 'taggy-pet-application'
     deploy:
       restart_policy:
@@ -35,7 +37,7 @@ services:
       - '443:443'
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - /home/tolkate:/etc/nginx/ssl
+#      - /home/tolkate:/etc/nginx/ssl # FIXME
     depends_on:
       - app
     networks:

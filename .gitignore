@@ -41,3 +41,5 @@ out/
 
 ### Other ###
 *.env
+!**/deploy/HELP.md
+!**/env/HELP.md

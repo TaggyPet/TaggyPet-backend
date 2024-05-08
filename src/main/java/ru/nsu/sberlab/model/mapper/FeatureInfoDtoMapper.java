@@ -1,8 +1,8 @@
 package ru.nsu.sberlab.model.mapper;
 
 import org.springframework.stereotype.Service;
-import ru.nsu.sberlab.model.dto.FeatureInfoDto;
-import ru.nsu.sberlab.model.dto.PropertyTypeDto;
+import ru.nsu.sberlab.model.dto.feature.FeatureInfoDto;
+import ru.nsu.sberlab.model.dto.feature.PropertyTypeDto;
 import ru.nsu.sberlab.model.entity.Feature;
 
 import java.util.function.Function;
