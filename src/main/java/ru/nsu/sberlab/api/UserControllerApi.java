@@ -12,7 +12,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ru.nsu.sberlab.model.dto.pet.PetCreationDto;
 import ru.nsu.sberlab.model.dto.pet.PetInfoDto;
 import ru.nsu.sberlab.model.dto.user.UserEditDto;
-import ru.nsu.sberlab.model.dto.user.UserRegistrationDto;
 import ru.nsu.sberlab.model.entity.User;
 
 import java.util.List;
@@ -20,10 +19,6 @@ import java.util.List;
 @Tag(name = "user", description = "API для работы с user")
 @RequestMapping(value = "api/v1/user/", produces = MediaType.APPLICATION_JSON_VALUE)
 public interface UserControllerApi {
-    @Operation(summary = "Регистрация пользователя")
-    @PostMapping(value = "registration")
-    ResponseEntity<?> createUser(@RequestBody @Validated UserRegistrationDto user);
-
     @Operation(summary = "Получения списка питомцев пользователя")
     @GetMapping(value = "pets")
     ResponseEntity<List<PetInfoDto>> listOfPets(@AuthenticationPrincipal User principal);

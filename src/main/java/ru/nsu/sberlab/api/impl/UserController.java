@@ -40,13 +40,6 @@ public class UserController implements UserControllerApi {
         return ResponseEntity.ok(userInfoDto);
     }
 
-    @PostMapping("/registration")
-    public ResponseEntity<?> createUser(@RequestBody @Validated UserRegistrationDto user) {
-        userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.OK)
-                .build();
-    }
-
     @GetMapping("/pets")
     public ResponseEntity<List<PetInfoDto>> listOfPets(@AuthenticationPrincipal User principal) {
         List<PetInfoDto> pets = userService.petsListByUserId(principal.getUserId());
