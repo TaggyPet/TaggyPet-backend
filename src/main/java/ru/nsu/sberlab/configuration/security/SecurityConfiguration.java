@@ -39,7 +39,11 @@ public class SecurityConfiguration {
                         .hasAnyRole("PRIVILEGED_ACCESS", "ADMIN")
                         .anyRequest()
                         .authenticated())
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(form -> form
+                        .loginPage("/api/v1/security/auth")
+                        .permitAll())
+        ;
         return httpSecurity.build();
     }
 }

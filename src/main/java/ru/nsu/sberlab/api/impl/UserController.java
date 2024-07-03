@@ -12,7 +12,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import ru.nsu.sberlab.api.UserControllerApi;
 import ru.nsu.sberlab.model.dto.pet.PetCreationDto;
 import ru.nsu.sberlab.model.dto.pet.PetInfoDto;
+import ru.nsu.sberlab.model.dto.user.PersonalCabinetDto;
 import ru.nsu.sberlab.model.dto.user.UserEditDto;
+import ru.nsu.sberlab.model.dto.user.UserInfoDto;
 import ru.nsu.sberlab.model.dto.user.UserRegistrationDto;
 import ru.nsu.sberlab.model.entity.User;
 import ru.nsu.sberlab.service.UserService;
@@ -21,26 +23,38 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "api/v1/user/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/v1/user", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class UserController implements UserControllerApi {
     private final UserService userService;
 
-    @PostMapping(value = "registration")
+    @GetMapping("/info")
+    public ResponseEntity<?> getUserPersonalCabinetInfo(@AuthenticationPrincipal User user) {
+        PersonalCabinetDto personalCabinetDto = userService.getPersonalCabinetDtoByEmail(user.getEmail());
+        return ResponseEntity.ok(personalCabinetDto);
+    }
+
+    @GetMapping("/edit")
+    public ResponseEntity<?> getUserEditInfo(@AuthenticationPrincipal User user) {
+        UserInfoDto userInfoDto = userService.getUserInfoDtoByEmail(user.getEmail());
+        return ResponseEntity.ok(userInfoDto);
+    }
+
+    @PostMapping("/registration")
     public ResponseEntity<?> createUser(@RequestBody @Validated UserRegistrationDto user) {
         userService.createUser(user);
         return ResponseEntity.status(HttpStatus.OK)
                 .build();
     }
 
-    @GetMapping(value = "pets")
+    @GetMapping("/pets")
     public ResponseEntity<List<PetInfoDto>> listOfPets(@AuthenticationPrincipal User principal) {
         List<PetInfoDto> pets = userService.petsListByUserId(principal.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(pets);
     }
 
-    @PostMapping(value = "pets")
+    @PostMapping("/pets")
     public ResponseEntity<?> createPet(
             @RequestPart("pet") @Validated PetCreationDto pet,
             @RequestPart("image_file") MultipartFile imageFile,
@@ -60,7 +74,7 @@ public class UserController implements UserControllerApi {
                 .build();
     }
 
-    @PutMapping
+    @PutMapping("/edit")
     public ResponseEntity<?> editProfile(
             @RequestBody @Validated UserEditDto editedUser,
             @AuthenticationPrincipal User principal
