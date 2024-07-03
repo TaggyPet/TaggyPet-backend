@@ -22,13 +22,13 @@ import ru.nsu.sberlab.service.PetService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/v1/pet/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/v1/pet", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PetController implements PetControllerApi {
     private final PetService petService;
 
     // TODO: add captcha to frontend
-    @GetMapping(value = "find/{searchParameter}")
+    @GetMapping("/find/{searchParameter}")
     public ResponseEntity<PetInfoDto> getPetInfo(
             @PathVariable(value = "searchParameter") @NotBlank String searchParameter
     ) {
@@ -37,7 +37,7 @@ public class PetController implements PetControllerApi {
                 .body(petInfo);
     }
 
-    @GetMapping(value = "{petId}")
+    @GetMapping("/{petId}")
     public ResponseEntity<PetInfoDto> getPetInfo(
             @PathVariable(value = "petId") @NotNull @Min(0) long petId
     ) {
@@ -46,7 +46,7 @@ public class PetController implements PetControllerApi {
                 .body(petInfo);
     }
 
-    @PutMapping(value = "{petId}")
+    @PutMapping("/{petId}")
     public ResponseEntity<PetInfoDto> editPet(
             @PathVariable("petId") @Min(value = 0, message = "Pet id should be positive value") long petId,
             @RequestPart("pet") @Validated PetEditDto petEditDto,
@@ -58,7 +58,7 @@ public class PetController implements PetControllerApi {
                 .body(updatedPet);
     }
 
-    @DeleteMapping(value = "{petId}")
+    @DeleteMapping("/{petId}")
     public ResponseEntity<?> deletePet(
             @PathVariable(value = "petId") @Min(value = 0, message = "Pet id should be positive value") long petId,
             @AuthenticationPrincipal User principal
@@ -68,7 +68,7 @@ public class PetController implements PetControllerApi {
                 .build();
     }
 
-    @GetMapping(value = "privileged/list")
+    @GetMapping("/privileged/list")
     public ResponseEntity<List<PetInfoDto>> privilegedPetsList(
             @PageableDefault Pageable pageable
     ) {
